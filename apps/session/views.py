@@ -1,0 +1,126 @@
+from rest_framework import generics, response, views, status
+from .models import Session, Category, Car, Price, Percent
+from .serializers import SessionSerializer, CategorySerializer, SessionListSerializer, PriceSerializer
+from instructor.serializers import InstructorSerializer
+from instructor.models import Instructor
+from client.models import Client
+from .paginations import CustomPagination
+from django.db.models import Q
+
+
+class PriceAPI(generics.ListAPIView):
+    queryset = Price.objects.all()
+    serializer_class = PriceSerializer
+
+
+class CategoryAPI(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class FilterCreateAPI(generics.ListAPIView):
+    queryset = Instructor.objects.all()
+    serializer_class = InstructorSerializer
+
+    def get_queryset(self):
+        qs = self.queryset.order_by('toifa').distinct('toifa')
+        cat = self.request.query_params.get('cat')
+        if cat:
+            qs = self.queryset.filter(toifa=cat).order_by('jins').distinct('jins')
+        gen = self.request.query_params.get('gen')
+        if gen:
+            qs = self.queryset.filter(Q(toifa=cat), Q(jins=gen)).order_by('moshina').distinct('moshina')
+        car = self.request.query_params.get('car')
+        if car:
+            qs = self.queryset.filter(Q(toifa__exact=cat), Q(jins__exact=gen), Q(moshina__exact=car))
+        return qs
+
+    def post(self, request, *args, **kwargs):
+        ins_tg = self.request.data['ins_tg_id']
+        car_name = self.request.data['moshina']
+        tg_id = self.request.data['telegram_id']
+        car = Car.objects.filter(nomi=car_name).first()
+        instructor = Instructor.objects.filter(telegram_id=ins_tg).first()
+        client = Client.objects.filter(telegram_id=tg_id).first()
+        data = dict()
+        data['client'] = client.id
+        data['instructor'] = instructor.id
+        data['moshina'] = car.id
+        data['toifa'] = self.request.data['toifa']
+        data['jins'] = self.request.data['jins']
+        data['qayerdan'] = self.request.data['qayerdan']
+        data['tulov_turi'] = self.request.data['tulov_turi']
+        data['vaqt'] = self.request.data['vaqt']
+        serializer = SessionSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return response.Response(serializer.data)
+
+
+class UserFilterAPI(views.APIView):
+    def get_queryset(self):
+        tg_id = self.request.query_params.get('id')
+        cl = Client.objects.filter(telegram_id=tg_id).first()
+        ins = Instructor.objects.filter(telegram_id=tg_id).filter()
+        if cl:
+            return "Client"
+        elif ins:
+            return "Instructor"
+        else:
+            return "Not registered"
+
+    def get(self, request, *args, **kwargs):
+        return response.Response({'message': self.get_queryset()})
+
+
+class SessionListAPI(generics.ListAPIView):
+    queryset = Session.objects.filter(is_finished=False).all()
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        cl = Client.objects.filter(telegram_id=self.kwargs['pk']).first()
+        ins = Instructor.objects.filter(telegram_id=self.kwargs['pk']).first()
+        if cl:
+            return self.queryset.filter(client=cl).all()
+        elif ins:
+            return self.queryset.filter(instructor=ins).all()
+
+    def get_serializer_class(self):
+        return SessionListSerializer
+
+
+class IsFinishedSessions(generics.ListAPIView):
+    queryset = Session.objects.filter(is_finished=True).all()
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        cl = Client.objects.filter(telegram_id=self.kwargs['pk']).first()
+        ins = Instructor.objects.filter(telegram_id=self.kwargs['pk']).first()
+        if cl:
+            return self.queryset.filter(client=cl).all()
+        elif ins:
+            return self.queryset.filter(instructor=ins).all()
+
+    def get_serializer_class(self):
+        return SessionListSerializer
+
+
+class SessionDetail(generics.RetrieveUpdateAPIView):
+    queryset = Session.objects.all()
+    serializer_class = SessionSerializer
+
+    def patch(self, request, *args, **kwargs):
+        obj = self.queryset.filter(id=kwargs['pk']).first()
+        obj.is_finished = True
+        obj.save()
+        ins = self.request.query_params.get('ins')
+        inst = Instructor.objects.filter(telegram_id=ins).first()
+        summa = int(self.request.data['summa'])
+        per = Percent.objects.filter(id=1).first()
+        inst.balans -= (summa * per.percent) / 100
+        inst.save()
+        return response.Response({'client': obj.client.telegram_id, 'balance': inst.balans})
+
+    def delete(self, request, *args, **kwargs):
+        self.queryset.filter(id=kwargs['pk']).first().delete()
+        return response.Response(status=status.HTTP_204_NO_CONTENT)

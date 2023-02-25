@@ -5,8 +5,8 @@ from instructor.models import Instructor
 
 class Category(models.Model):
     class Meta:
-        verbose_name = 'Prava toifasi'
-        verbose_name_plural = 'Prava toifalari'
+        verbose_name = 'Права тоифалари'
+        verbose_name_plural = 'Права тоифалари'
 
     toifa = models.CharField(max_length=2)
 
@@ -16,7 +16,8 @@ class Category(models.Model):
 
 class Car(models.Model):
     class Meta:
-        verbose_name_plural = 'Moshinalar'
+        verbose_name_plural = 'Мошиналар'
+        verbose_name = 'Мошиналар'
 
     nomi = models.CharField(max_length=255)
     categoriyasi = models.ForeignKey(Category, models.CASCADE)
@@ -37,8 +38,8 @@ class Session(models.Model):
         ordering = ['id']
 
     PAYMENT = (
-        ('Naqd', 'Naqd'),
-        ('Karta', 'Karta'),
+        ('Накд', 'Накд'),
+        ('Kaртa', 'Kaртa'),
     )
     client = models.ForeignKey(Client, models.CASCADE)
     toifa = models.CharField(max_length=2)
@@ -47,7 +48,7 @@ class Session(models.Model):
     instructor = models.ForeignKey(Instructor, models.CASCADE)
     qayerdan = models.CharField(max_length=255)
     vaqt = models.DateTimeField()
-    tulov_turi = models.CharField(max_length=5, choices=PAYMENT, default='Naqd')
+    tulov_turi = models.CharField(max_length=5, choices=PAYMENT, default='Накд')
     is_finished = models.BooleanField(default=False)
 
     def __str__(self):
@@ -58,4 +59,4 @@ class Price(models.Model):
     price = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.price // 1000},000 so'm soatiga"
+        return f"{self.price // 1000},000 сўм соатига"

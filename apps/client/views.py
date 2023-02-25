@@ -14,9 +14,9 @@ class ClientAPI(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         tel = serializer.validated_data['telegram_id']
         if Client.objects.filter(telegram_id=tel).first():
-            return response.Response({'message': "botimizdan avval ro'yxatdan o'tgansiz!"})
+            return response.Response({'message': "ботимиздан аввал рўйхатдан ўтгансиз!"})
         serializer.save()
-        return response.Response({'message': "botimizdan muvaffaqiyatli ro'yxatan o'tdingiz!"})
+        return response.Response({'message': "ботимиздан рўйхатдан ўтдингиз!"})
 
     def get(self, request, *args, **kwargs):
         qs = self.queryset.filter(telegram_id=self.kwargs['pk'])

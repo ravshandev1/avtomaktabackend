@@ -14,7 +14,7 @@ class IncreaseBalanceAPI(views.APIView):
         obj = Instructor.objects.filter(telegram_id=instructor).first()
         obj.balans += (summa // 100)
         obj.save()
-        return response.Response({'message': "Balansingiz muvaffaqiyatli to'ldirildi!!!"})
+        return response.Response({'message': "Балансингиз тўлдирилди!!!"})
 
 
 class RatingAPI(views.APIView):
@@ -24,7 +24,7 @@ class RatingAPI(views.APIView):
         i_id = Instructor.objects.filter(telegram_id=instructor).first()
         c_id = Client.objects.filter(telegram_id=client).first()
         Rating.objects.create(instructor_id=i_id.id, client_id=c_id.id)
-        return response.Response({'message': "Baholash uchun raxmat!!!"})
+        return response.Response({'message': "Бахолаш учун рахмат!!!"})
 
     def patch(self, request, *args, **kwargs):
         client = int(self.request.data['client'])
@@ -33,7 +33,7 @@ class RatingAPI(views.APIView):
         rs = rt.filter(rate=0).first()
         rs.rate = rate
         rs.save()
-        return response.Response({'message': "Baholash uchun raxmat!!!"})
+        return response.Response({'message': "Бахолаш учун рахмат!!!"})
 
 
 class RegionListAPI(generics.ListAPIView):
@@ -61,9 +61,9 @@ class InstructorAPI(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         tel = serializer.validated_data['telegram_id']
         if Instructor.objects.filter(telegram_id=tel).first():
-            return response.Response({'message': "botimizdan avval ro'yxatdan o'tgansiz!"})
+            return response.Response({'message': "ботимиздан аввал рўйхатдан ўтгансиз!"})
         serializer.save()
-        return response.Response({'message': "botimizdan muvaffaqiyatli ro'yxatan o'tdingiz!"})
+        return response.Response({'message': "ботимиздан рўйхатдан ўтдингиз!"})
 
     def get(self, request, *args, **kwargs):
         qs = self.queryset.filter(telegram_id=self.kwargs['pk'])

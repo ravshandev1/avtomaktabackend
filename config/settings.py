@@ -152,10 +152,10 @@ JAZZMIN_SETTINGS = {
     "site_brand": "Avtomaktab",
 
     # Logo to use for your site, must be present in static files, used for brand on top left
-    "site_logo": "unnamed.webp",
+    "site_logo": "photo_2023-03-03_16-17-49.jpg",
 
     # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
-    "login_logo": 'unnamed.webp',
+    "login_logo": 'photo_2023-03-03_16-17-49.jpg',
 
     # Logo to use for login form in dark themes (defaults to login_logo)
     "login_logo_dark": False,
@@ -174,7 +174,7 @@ JAZZMIN_SETTINGS = {
 
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string
-    "search_model": ["auth.User", "auth.Group"],
+    #"search_model": ["auth.User", "auth.Group"],
 
     # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
     "user_avatar": None,

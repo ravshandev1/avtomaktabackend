@@ -5,7 +5,8 @@ from .models import Session, Category, Car, Price
 class PriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Price
-        fields = ['price']
+        fields = ['price', 'category']
+    category = serializers.CharField(source='category.toifa')
 
 
 class SessionSerializer(serializers.ModelSerializer):

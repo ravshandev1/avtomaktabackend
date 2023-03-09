@@ -12,6 +12,11 @@ class PriceAPI(generics.ListAPIView):
     queryset = Price.objects.all()
     serializer_class = PriceSerializer
 
+    def get_queryset(self):
+        s_id = self.request.query_params.get('s_id')
+        obj = Session.objects.filter(id=s_id).first().toifa
+        cat = obj
+        return self.queryset.filter(category__exact=cat).first()
 
 class CategoryAPI(generics.ListAPIView):
     queryset = Category.objects.all()

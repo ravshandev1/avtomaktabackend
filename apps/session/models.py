@@ -56,6 +56,7 @@ class Session(models.Model):
 
 
 class Price(models.Model):
+    category = models.ForeignKey(Category, models.CASCADE, related_name='price')
     price = models.PositiveIntegerField()
 
     def __str__(self):

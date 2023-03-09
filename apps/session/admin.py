@@ -20,7 +20,7 @@ class PercentAdmin(admin.ModelAdmin):
 
 @admin.register(Session)
 class SessionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'client', 'instructor', 'moshina', 'vaqt']
+    list_display = ['id', 'client', 'instructor', 'moshina', 'vaqt', 'is_finished']
     list_filter = ['is_finished']
 
 

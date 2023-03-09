@@ -39,7 +39,7 @@ class Session(models.Model):
 
     PAYMENT = (
         ('Накд', 'Накд'),
-        ('Kaртa', 'Kaртa'),
+        ('Карта', 'Карта'),
     )
     client = models.ForeignKey(Client, models.CASCADE)
     toifa = models.CharField(max_length=2)

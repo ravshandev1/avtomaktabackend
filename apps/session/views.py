@@ -8,15 +8,25 @@ from .paginations import CustomPagination
 from django.db.models import Q
 
 
+class PriceListAPI(generics.ListAPIView):
+    queryset = Price.objects.all()
+    serializer_class = PriceSerializer
+
+
 class PriceAPI(generics.ListAPIView):
     queryset = Price.objects.all()
     serializer_class = PriceSerializer
 
-    def get_queryset(self):
+    def get(self, request, *args, **kwargs):
         s_id = self.request.query_params.get('s_id')
-        obj = Session.objects.filter(id=s_id).first().toifa
-        cat = obj
-        return self.queryset.filter(category__exact=cat).first()
+        obj = Session.objects.filter(id=s_id).first()
+        cat = obj.toifa
+        queryset = self.queryset.filter(category__toifa__exact=cat).first()
+        serializer = self.get_serializer(queryset)
+        data = serializer.data
+        data['qayerdan'] = obj.qayerdan
+        return response.Response(data)
+
 
 class CategoryAPI(generics.ListAPIView):
     queryset = Category.objects.all()

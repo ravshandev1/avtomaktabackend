@@ -13,10 +13,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import sys
+from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(os.path.join(BASE_DIR, 'apps'))
+ENV = dotenv_values(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -78,23 +80,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': "cloudproject",
-#         'USER': "clouduser",
-#         'PASSWORD': "password",
-#         'HOST': "localhost",
-#         'PORT': 5432,
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "baza",
-        'USER': "ravshan",
-        'PASSWORD': "alibaba1711",
+        'NAME': ENV.get('DB_NAME'),
+        'USER': ENV.get('DB_USER'),
+        'PASSWORD': ENV.get('DB_PASSWORD'),
         'HOST': "localhost",
         'PORT': 5432,
     }

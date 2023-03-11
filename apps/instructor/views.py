@@ -16,7 +16,7 @@ class FreeTimeAPI(views.APIView):
         month = dt[1]
         year = dt[0]
         sessions = Session.objects.filter(instructor__telegram_id=telegram_id, vaqt__day=day, vaqt__year=year,
-                                          vaqt__month=month).all()
+                                          vaqt__month=month, is_finished=False).all()
         data = dict()
         if sessions:
             data['vaqt'] = [f"{str(item.vaqt)[11:16]}" for item in sessions]

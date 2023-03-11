@@ -3,8 +3,26 @@ from rest_framework import generics, response, views
 from .models import Instructor, Tuman, Rating
 from .serializers import InstructorSerializer, TumanSerializer
 from session.serializers import MoshinaSerializer
-from session.models import Car
+from session.models import Car, Session
 from client.models import Client
+
+
+class FreeTimeAPI(views.APIView):
+    def get(self, request, *args, **kwargs):
+        telegram_id = self.request.query_params.get('tel_id')
+        date = self.request.query_params.get('date')
+        dt = date.split('-')
+        day = dt[2]
+        month = dt[1]
+        year = dt[0]
+        sessions = Session.objects.filter(instructor__telegram_id=telegram_id, vaqt__day=day, vaqt__year=year,
+                                          vaqt__month=month).all()
+        data = dict()
+        if sessions:
+            data['vaqt'] = [f"{str(item.vaqt)[11:16]}" for item in sessions]
+        else:
+            data['vaqt'] = 'Band qilinmagan!'
+        return response.Response(data)
 
 
 class IncreaseBalanceAPI(views.APIView):

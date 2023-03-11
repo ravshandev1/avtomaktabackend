@@ -6,7 +6,7 @@ from .models import Instructor, Tuman, Rating
 class InstructorAdmin(admin.ModelAdmin):
     list_display = ['id', 'ism', 'familiya', 'telefon', 'moshina']
     list_filter = ['toifa']
-    fields = ['ism', 'familiya', 'telefon', 'jins', 'tuman', 'toifa', 'moshina', 'nomeri', 'balans', 'telegram_id']
+    exclude = ['ratet']
 
 
 @admin.register(Tuman)

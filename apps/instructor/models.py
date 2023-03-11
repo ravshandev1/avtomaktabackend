@@ -34,6 +34,7 @@ class Instructor(models.Model):
     balans = models.IntegerField(default=0)
     telegram_id = models.BigIntegerField()
     ratet = models.FloatField(null=True)
+    location = models.CharField(max_length=250, null=True)
 
     def __str__(self):
         return f"{self.ism} {self.moshina}"

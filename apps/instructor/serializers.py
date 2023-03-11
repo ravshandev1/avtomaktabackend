@@ -12,4 +12,4 @@ class InstructorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Instructor
         fields = ['ism', 'familiya', 'telefon', 'jins', 'tuman', 'toifa', 'moshina', 'nomeri', 'balans', 'telegram_id',
-                  'get_rating']
+                  'get_rating', 'location']

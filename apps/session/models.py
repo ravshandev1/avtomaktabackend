@@ -41,11 +41,11 @@ class Session(models.Model):
         ('Накд', 'Накд'),
         ('Карта', 'Карта'),
     )
-    client = models.ForeignKey(Client, models.CASCADE)
+    client = models.ForeignKey(Client, models.CASCADE, related_name='sessions')
     toifa = models.CharField(max_length=2)
     jins = models.CharField(max_length=5)
     moshina = models.ForeignKey(Car, models.SET_NULL, null=True)
-    instructor = models.ForeignKey(Instructor, models.CASCADE)
+    instructor = models.ForeignKey(Instructor, models.CASCADE, related_name='sessions')
     qayerdan = models.CharField(max_length=255)
     vaqt = models.DateTimeField()
     tulov_turi = models.CharField(max_length=5, choices=PAYMENT, default='Накд')

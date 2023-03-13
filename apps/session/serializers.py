@@ -1,11 +1,18 @@
 from rest_framework import serializers
-from .models import Session, Category, Car, Price
+from .models import Session, Category, Car, Price, Percent
+
+
+class PercentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Percent
+        fields = ['percent']
 
 
 class PriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Price
         fields = ['price', 'category']
+
     category = serializers.CharField(source='category.toifa')
 
 

@@ -1,6 +1,7 @@
 from rest_framework import generics, response, views, status
 from .models import Session, Category, Car, Price, Percent
-from .serializers import SessionSerializer, CategorySerializer, SessionListSerializer, PriceSerializer
+from .serializers import SessionSerializer, CategorySerializer, SessionListSerializer, PriceSerializer, \
+    PercentSerializer
 from instructor.serializers import InstructorSerializer
 from instructor.models import Instructor
 from client.models import Client
@@ -8,16 +9,14 @@ from .paginations import CustomPagination
 from django.db.models import Q
 
 
+class PercentAPI(generics.ListAPIView):
+    queryset = Percent.objects.all()
+    serializer_class = PercentSerializer
+
+
 class PriceListAPI(generics.ListAPIView):
     queryset = Price.objects.all()
     serializer_class = PriceSerializer
-
-    def get(self, request, *args, **kwargs):
-        serializer = self.get_serializer(self.get_queryset(), many=True)
-        data = serializer.data
-        obj = Percent.objects.first()
-        data['percent'] = obj.percent
-        return response.Response(data)
 
 
 class PriceAPI(generics.ListAPIView):

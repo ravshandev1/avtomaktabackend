@@ -12,6 +12,13 @@ class PriceListAPI(generics.ListAPIView):
     queryset = Price.objects.all()
     serializer_class = PriceSerializer
 
+    def get(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.get_queryset(), many=True)
+        data = serializer.data
+        obj = Percent.objects.first()
+        data['percent'] = obj.percent
+        return response.Response(data)
+
 
 class PriceAPI(generics.ListAPIView):
     queryset = Price.objects.all()

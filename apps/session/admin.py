@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Session, Category, Car, Price, Percent
+from .models import Session, Category, Car, Price, Percent, TextSes
 
 
 @admin.register(Price)
@@ -7,7 +7,7 @@ class PriceAdmin(admin.ModelAdmin):
     list_display = ['narx']
 
     def narx(self, obj):
-        return f"{obj.price // 1000},000 so'm soatiga"
+        return f"{obj.price // 1000},000 сўм соатига"
 
 
 @admin.register(Percent)
@@ -32,3 +32,8 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
     list_display = ['id', 'nomi']
+
+
+@admin.register(TextSes)
+class CarAdmin(admin.ModelAdmin):
+    pass

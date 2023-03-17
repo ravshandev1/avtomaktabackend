@@ -1,12 +1,17 @@
 from rest_framework import generics, response, views, status
-from .models import Session, Category, Car, Price, Percent
+from .models import Session, Car, Price, Percent, TextSes
 from .serializers import SessionSerializer, CategorySerializer, SessionListSerializer, PriceSerializer, \
-    PercentSerializer
+    PercentSerializer, TextSerializer
 from instructor.serializers import InstructorSerializer
 from instructor.models import Instructor
-from client.models import Client
+from client.models import Client, Category
 from .paginations import CustomPagination
 from django.db.models import Q
+
+
+class TextAPI(generics.RetrieveAPIView):
+    queryset = TextSes.objects.all()
+    serializer_class = TextSerializer
 
 
 class PercentAPI(generics.ListAPIView):
@@ -17,6 +22,10 @@ class PercentAPI(generics.ListAPIView):
 class PriceListAPI(generics.ListAPIView):
     queryset = Price.objects.all()
     serializer_class = PriceSerializer
+
+    def get_queryset(self):
+        qs = self.queryset.filter(category__instructors__balans__isnull=False)
+        return qs.order_by('category').distinct('category')
 
 
 class PriceAPI(generics.ListAPIView):
@@ -29,9 +38,7 @@ class PriceAPI(generics.ListAPIView):
         cat = obj.toifa
         queryset = self.queryset.filter(category__toifa__exact=cat).first()
         serializer = self.get_serializer(queryset)
-        data = serializer.data
-        data['qayerdan'] = obj.qayerdan
-        return response.Response(data)
+        return response.Response(serializer.data)
 
 
 class CategoryAPI(generics.ListAPIView):
@@ -44,32 +51,38 @@ class FilterCreateAPI(generics.ListAPIView):
     serializer_class = InstructorSerializer
 
     def get_queryset(self):
-        qs = self.queryset.order_by('toifa').distinct('toifa')
+        qs = self.queryset.order_by('tuman').distinct('tuman')
+        tum = self.request.query_params.get('tum')
+        if tum:
+            qs = self.queryset.filter(tuman__exact=tum).order_by('toifa').distinct('toifa')
         cat = self.request.query_params.get('cat')
         if cat:
-            qs = self.queryset.filter(toifa=cat).order_by('jins').distinct('jins')
+            qs = self.queryset.filter(Q(tuman__exact=tum), Q(toifa__toifa__exact=cat)).order_by('jins').distinct('jins')
         gen = self.request.query_params.get('gen')
         if gen:
-            qs = self.queryset.filter(Q(toifa=cat), Q(jins=gen)).order_by('moshina').distinct('moshina')
+            qs = self.queryset.filter(Q(tuman__exact=tum), Q(toifa__toifa__exact=cat), Q(jins=gen)).order_by(
+                'moshina').distinct('moshina')
         car = self.request.query_params.get('car')
         if car:
-            qs = self.queryset.filter(Q(toifa__exact=cat), Q(jins__exact=gen), Q(moshina__exact=car))
+            qs = self.queryset.filter(Q(tuman__exact=tum), Q(toifa__toifa__exact=cat), Q(jins__exact=gen),
+                                      Q(moshina__exact=car))
         return qs
 
     def post(self, request, *args, **kwargs):
         ins_tg = self.request.data['ins_tg_id']
         car_name = self.request.data['moshina']
         tg_id = self.request.data['telegram_id']
+        cat = self.request.data['toifa']
         car = Car.objects.filter(nomi=car_name).first()
         instructor = Instructor.objects.filter(telegram_id=ins_tg).first()
         client = Client.objects.filter(telegram_id=tg_id).first()
+
         data = dict()
         data['client'] = client.id
         data['instructor'] = instructor.id
         data['moshina'] = car.id
         data['toifa'] = self.request.data['toifa']
         data['jins'] = self.request.data['jins']
-        data['qayerdan'] = self.request.data['qayerdan']
         data['tulov_turi'] = self.request.data['tulov_turi']
         data['vaqt'] = self.request.data['vaqt']
         serializer = SessionSerializer(data=data)
@@ -136,12 +149,20 @@ class SessionDetail(generics.RetrieveUpdateAPIView):
         obj.save()
         ins = self.request.query_params.get('ins')
         inst = Instructor.objects.filter(telegram_id=ins).first()
-        summa = int(self.request.data['summa'])
-        per = Percent.objects.filter(id=1).first()
-        inst.balans -= (summa * per.percent) / 100
-        inst.save()
+        # summa = int(self.request.data['summa'])
+        # per = Percent.objects.filter(id=1).first()
+        # inst.balans -= (summa * per.percent) / 100
+        # inst.save()
         return response.Response({'client': obj.client.telegram_id, 'balance': inst.balans})
 
     def delete(self, request, *args, **kwargs):
         self.queryset.filter(id=kwargs['pk']).first().delete()
         return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SessionLocationAPI(views.APIView):
+    def get(self, request, *args, **kwargs):
+        obj = Session.objects.filter(id=self.kwargs['pk']).first()
+        loc = obj.instructor.location
+        ls = loc.split(', ')
+        return response.Response({'lat': ls[0], 'lon': ls[1]})

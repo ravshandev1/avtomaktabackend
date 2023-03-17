@@ -1,10 +1,20 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, response, views
-from .models import Instructor, Tuman, Rating
-from .serializers import InstructorSerializer, TumanSerializer
+from .models import Instructor, Tuman, Rating, Payment, TextInsUpdater, TextInsRegister
+from .serializers import InstructorSerializer, TumanSerializer, TextUpdaterSerializer, TextRegisterSerializer
 from session.serializers import MoshinaSerializer
-from session.models import Car, Session
+from session.models import Car, Session, Category
 from client.models import Client
+
+
+class TextRAPI(generics.RetrieveAPIView):
+    queryset = TextInsRegister.objects.all()
+    serializer_class = TextRegisterSerializer
+
+
+class TextUAPI(generics.RetrieveAPIView):
+    queryset = TextInsUpdater.objects.all()
+    serializer_class = TextUpdaterSerializer
 
 
 class FreeTimeAPI(views.APIView):
@@ -31,6 +41,7 @@ class IncreaseBalanceAPI(views.APIView):
         instructor = int(self.request.data['instructor'])
         obj = Instructor.objects.filter(telegram_id=instructor).first()
         obj.balans += (summa // 100)
+        Payment.objects.create(instructor_id=obj.id, summa=(summa // 100))
         obj.save()
         return response.Response({'message': "Балансингиз тўлдирилди!!!"})
 
@@ -75,7 +86,21 @@ class InstructorAPI(generics.CreateAPIView):
     serializer_class = InstructorSerializer
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        data = dict()
+        data['ism'] = request.data['ism']
+        data['familiya'] = request.data['familiya']
+        data['telefon'] = request.data['telefon']
+        data['jins'] = request.data['jins']
+        data['tuman'] = request.data['tuman']
+        data['moshina'] = request.data['moshina']
+        data['nomeri'] = request.data['nomeri']
+        data['telegram_id'] = request.data['telegram_id']
+        data['location'] = request.data['location']
+        data['card'] = request.data['card']
+        cat = request.data['toifa']
+        obj = Category.objects.filter(toifa__exact=cat).first()
+        data['toifa'] = [obj.id]
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         tel = serializer.validated_data['telegram_id']
         if Instructor.objects.filter(telegram_id=tel).first():
@@ -90,7 +115,13 @@ class InstructorAPI(generics.CreateAPIView):
 
     def patch(self, request, *args, **kwargs):
         qs = self.queryset.filter(telegram_id=self.kwargs['pk'])
-        serializer = self.get_serializer(instance=get_object_or_404(qs), data=request.data, partial=True)
+        data = request.data
+        cat = request.data.get('toifa', None)
+        if cat:
+            data = dict()
+            obj = Category.objects.filter(toifa__exact=cat).first()
+            data['toifa'] = [obj.id]
+        serializer = self.get_serializer(instance=get_object_or_404(qs), data=data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return response.Response(serializer.data)

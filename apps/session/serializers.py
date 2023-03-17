@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Session, Category, Car, Price, Percent
+from .models import Session, Category, Car, Price, Percent, TextSes
+
+
+class TextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TextSes
+        fields = '__all__'
 
 
 class PercentSerializer(serializers.ModelSerializer):
@@ -19,7 +25,7 @@ class PriceSerializer(serializers.ModelSerializer):
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
-        fields = ['client', 'toifa', 'jins', 'moshina', 'instructor', 'qayerdan', 'vaqt', 'tulov_turi']
+        fields = ['client', 'toifa', 'jins', 'moshina', 'instructor', 'vaqt', 'tulov_turi']
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -37,7 +43,7 @@ class MoshinaSerializer(serializers.ModelSerializer):
 class SessionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
-        fields = ['id', 'client', 'qayerdan', 'vaqt', 'tulov_turi', 'c_telefoni', 'i_telefoni', 'instructor', 'moshina',
+        fields = ['id', 'client', 'vaqt', 'tulov_turi', 'c_telefoni', 'i_telefoni', 'instructor', 'moshina',
                   'jins', 'toifa']
 
     client = serializers.CharField(source='client.ism')

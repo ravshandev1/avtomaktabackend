@@ -112,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -158,7 +158,7 @@ JAZZMIN_SETTINGS = {
     "site_icon": None,
 
     # Welcome text on the login screen
-    "welcome_sign": "Avtomaktabga xush kelibsiz!!",
+    "welcome_sign": "Avtomaktabga xush kelibsiz!",
 
     # Copyright on the footer
     "copyright": "Zamaan group",
@@ -214,7 +214,7 @@ JAZZMIN_SETTINGS = {
     "hide_apps": [],
 
     # Hide these models when generating side menu (e.g auth.user)
-    "hide_models": [],
+    "hide_models": ['auth.Group'],
 
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
     # "order_with_respect_to": ["auth", "books", "books.author", "books.book"],

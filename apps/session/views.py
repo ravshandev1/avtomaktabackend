@@ -156,8 +156,8 @@ class SessionDetail(generics.RetrieveUpdateAPIView):
         return response.Response({'client': obj.client.telegram_id, 'balance': inst.balans})
 
     def delete(self, request, *args, **kwargs):
-        self.queryset.filter(id=kwargs['pk']).first().delete()
-        return response.Response(status=status.HTTP_204_NO_CONTENT)
+        obj = self.queryset.filter(id=kwargs['pk']).first()
+        return response.Response({'vaqt': obj.vaqt, 'id': obj.instructor.telegram_id}, status=status.HTTP_204_NO_CONTENT)
 
 
 class SessionLocationAPI(views.APIView):

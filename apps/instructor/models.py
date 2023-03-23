@@ -49,7 +49,10 @@ class Instructor(models.Model):
         if obj == 0:
             obj = 1
         rt = sum([item.rate for item in self.rating.all()])
-        self.ratet = round(rt / obj)
+        nd = round(rt / obj)
+        if nd == 0:
+            nd = 1
+        self.ratet = nd
         self.save()
         return self.ratet
 

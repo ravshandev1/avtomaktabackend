@@ -76,7 +76,7 @@ class Rating(models.Model):
     )
     instructor = models.ForeignKey(Instructor, models.CASCADE, related_name='rating')
     rate = models.IntegerField(choices=RATE, default=0)
-    client = models.ForeignKey(Client, models.SET('o\'chib ketgan'), related_name='rating')
+    client = models.ForeignKey(Client, models.SET_NULL, null=True, related_name='rating')
 
     def __str__(self):
         return f"{self.instructor.ism} {self.rate}"

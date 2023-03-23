@@ -158,7 +158,7 @@ class SessionDetail(generics.RetrieveUpdateAPIView):
     def delete(self, request, *args, **kwargs):
         obj = self.queryset.filter(id=kwargs['pk']).first()
         obj.delete()
-        return response.Response({'vaqt': obj.vaqt, 'id': obj.instructor.telegram_id}, status=status.HTTP_200_OK)
+        return response.Response({'vaqt': obj.vaqt.__format__('%-d.%m.%Y %H:%M'), 'id': obj.instructor.telegram_id}, status=status.HTTP_200_OK)
 
 
 class SessionLocationAPI(views.APIView):

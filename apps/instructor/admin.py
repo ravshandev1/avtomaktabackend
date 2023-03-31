@@ -5,7 +5,7 @@ from .models import Instructor, Tuman, Payment, TextInsUpdater, TextInsRegister
 @admin.register(Instructor)
 class InstructorAdmin(admin.ModelAdmin):
     list_display = ['id', 'ism', 'familiya', 'telefon', 'moshina']
-    list_filter = ['toifa', 'dabro']
+    list_filter = ['toifa', 'tasdiqlash']
     exclude = ['ratet']
 
 

@@ -39,7 +39,7 @@ class Instructor(models.Model):
     ratet = models.PositiveIntegerField(default=1)
     location = models.CharField(max_length=250, null=True)
     card = models.CharField(max_length=3, choices=(('Ҳа', 'Ҳа'), ('Йўқ', 'Йўқ')), default='Йўқ')
-    dabro = models.BooleanField(default=False)
+    tasdiqlash = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.ism} {self.moshina}"

@@ -47,7 +47,7 @@ class CategoryAPI(generics.ListAPIView):
 
 
 class FilterCreateAPI(generics.ListAPIView):
-    queryset = Instructor.objects.all()
+    queryset = Instructor.objects.filter(dabro=True)
     serializer_class = InstructorSerializer
 
     def get_queryset(self):

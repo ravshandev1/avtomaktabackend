@@ -29,7 +29,7 @@ class Instructor(models.Model):
     ism = models.CharField(max_length=255)
     familiya = models.CharField(max_length=255)
     telefon = models.CharField(validators=[phone_regex], max_length=12)
-    jins = models.CharField(max_length=5)
+    jins = models.CharField(max_length=15)
     tuman = models.CharField(max_length=255, null=True)
     toifa = models.ManyToManyField(Category, related_name='instructors')
     moshina = models.CharField(max_length=255, null=True)
@@ -38,7 +38,7 @@ class Instructor(models.Model):
     telegram_id = models.BigIntegerField()
     ratet = models.PositiveIntegerField(default=1)
     location = models.CharField(max_length=250, null=True)
-    card = models.CharField(max_length=3, choices=(('Ҳа', 'Ҳа'), ('Йўқ', 'Йўқ')), default='Йўқ')
+    card = models.CharField(max_length=15)
     tasdiqlash = models.BooleanField(default=False)
 
     def __str__(self):
@@ -98,17 +98,29 @@ class Payment(models.Model):
 
 class TextInsRegister(models.Model):
     ism = models.CharField(max_length=380)
+    ism_ru = models.CharField(max_length=380, null=True, blank=True)
     familiya = models.CharField(max_length=380)
+    familiya_ru = models.CharField(max_length=380, null=True, blank=True)
     telefon = models.CharField(max_length=380)
+    telefon_ru = models.CharField(max_length=380, null=True, blank=True)
     jins = models.CharField(max_length=380)
+    jins_ru = models.CharField(max_length=380, null=True, blank=True)
     telefon_qayta = models.CharField(max_length=380)
+    telefon_qayta_ru = models.CharField(max_length=380, null=True, blank=True)
     manzil = models.CharField(max_length=380)
+    manzil_ru = models.CharField(max_length=380, null=True, blank=True)
     categoriya = models.CharField(max_length=380)
+    categoriya_ru = models.CharField(max_length=380, null=True, blank=True)
     moshina = models.CharField(max_length=380)
+    moshina_ru = models.CharField(max_length=380, null=True, blank=True)
     moshina_nomeri = models.CharField(max_length=380)
+    moshina_nomeri_ru = models.CharField(max_length=380, null=True, blank=True)
     moshina_nomeri_qayta = models.CharField(max_length=380)
+    moshina_nomeri_qayta_ru = models.CharField(max_length=380, null=True, blank=True)
     lacatsiya = models.CharField(max_length=380)
+    lacatsiya_ru = models.CharField(max_length=380, null=True, blank=True)
     karta = models.CharField(max_length=380)
+    karta_ru = models.CharField(max_length=380, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Техт Инструктор Регистер'
@@ -117,16 +129,27 @@ class TextInsRegister(models.Model):
 
 class TextInsUpdater(models.Model):
     ism = models.CharField(max_length=380)
+    ism_ru = models.CharField(max_length=380, null=True, blank=True)
     familiya = models.CharField(max_length=380)
+    familiya_ru = models.CharField(max_length=380, null=True, blank=True)
     telefon = models.CharField(max_length=380)
+    telefon_ru = models.CharField(max_length=380, null=True, blank=True)
     telefon_qayta = models.CharField(max_length=380)
+    telefon_qayta_ru = models.CharField(max_length=380, null=True, blank=True)
     manzil = models.CharField(max_length=380)
+    manzil_ru = models.CharField(max_length=380, null=True, blank=True)
     categoriya = models.CharField(max_length=380)
+    categoriya_ru = models.CharField(max_length=380, null=True, blank=True)
     moshina = models.CharField(max_length=380)
+    moshina_ru = models.CharField(max_length=380, null=True, blank=True)
     moshina_nomeri = models.CharField(max_length=380)
+    moshina_nomeri_ru = models.CharField(max_length=380, null=True, blank=True)
     moshina_nomeri_qayta = models.CharField(max_length=380)
+    moshina_nomeri_qayta_ru = models.CharField(max_length=380, null=True, blank=True)
     lacatsiya = models.CharField(max_length=380)
+    lacatsiya_ru = models.CharField(max_length=380, null=True, blank=True)
     karta = models.CharField(max_length=380)
+    karta_ru = models.CharField(max_length=380, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Техт Инструктор Изменет'

@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': ENV.get('DB_NAME'),
         'USER': ENV.get('DB_USER'),
         'PASSWORD': ENV.get('DB_PASSWORD'),
-        'HOST': "localhost",
+        'HOST': "185.217.131.210",
         'PORT': 5432,
     }
 }

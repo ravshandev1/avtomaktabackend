@@ -43,7 +43,7 @@ class IncreaseBalanceAPI(views.APIView):
         obj.balans += (summa // 100)
         Payment.objects.create(instructor_id=obj.id, summa=(summa // 100))
         obj.save()
-        return response.Response({'message': "Балансингиз тўлдирилди!!!"})
+        return response.Response({'message': "Балансингиз тўлдирилди!!!", 'message_ru': "Ваш баланс был пополнен!!!"})
 
 
 class RatingAPI(views.APIView):
@@ -53,7 +53,7 @@ class RatingAPI(views.APIView):
         i_id = Instructor.objects.filter(telegram_id=instructor).first()
         c_id = Client.objects.filter(telegram_id=client).first()
         Rating.objects.create(instructor_id=i_id.id, client_id=c_id.id)
-        return response.Response({'message': "Бахолаш учун рахмат!!!"})
+        return response.Response({'message': "Бахолаш учун рахмат!!!", 'message_ru': "Спасибо для счастья!!!"})
 
     def patch(self, request, *args, **kwargs):
         client = int(self.request.data['client'])
@@ -62,7 +62,7 @@ class RatingAPI(views.APIView):
         rs = rt.filter(rate=0).first()
         rs.rate = rate
         rs.save()
-        return response.Response({'message': "Бахолаш учун рахмат!!!"})
+        return response.Response({'message': "Бахолаш учун рахмат!!!", 'message_ru': "Спасибо для счастья!!!"})
 
 
 class RegionListAPI(generics.ListAPIView):
@@ -104,9 +104,11 @@ class InstructorAPI(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         tel = serializer.validated_data['telegram_id']
         if Instructor.objects.filter(telegram_id=tel).first():
-            return response.Response({'message': "ботимиздан аввал рўйхатдан ўтгансиз!"})
+            return response.Response({'message': "ботимиздан аввал рўйхатдан ўтгансиз!",
+                                      'message_ru': "Вы зарегистрировались раньше нашего бота!"})
         serializer.save()
-        return response.Response({'message': "ботимиздан рўйхатдан ўтдингиз!"})
+        return response.Response(
+            {'message': "ботимиздан рўйхатдан ўтдингиз!", 'message_ru': "Вы зарегистрировались с нашего бота!"})
 
     def get(self, request, *args, **kwargs):
         qs = self.queryset.filter(telegram_id=self.kwargs['pk'])

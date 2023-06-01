@@ -32,17 +32,13 @@ class Session(models.Model):
         verbose_name_plural = 'Машғулотлар'
         verbose_name = 'Машғулотлар'
 
-    PAYMENT = (
-        ('Нақд', 'Нақд'),
-        ('Карта', 'Карта'),
-    )
     client = models.ForeignKey(Client, models.CASCADE, related_name='sessions')
     toifa = models.CharField(max_length=2)
-    jins = models.CharField(max_length=5)
+    jins = models.CharField(max_length=15)
     moshina = models.ForeignKey(Car, models.SET_NULL, null=True)
     instructor = models.ForeignKey(Instructor, models.CASCADE, related_name='sessions')
     vaqt = models.DateTimeField()
-    tulov_turi = models.CharField(max_length=5, choices=PAYMENT, default='Накд')
+    tulov_turi = models.CharField(max_length=15)
     is_finished = models.BooleanField(default=False)
 
     def __str__(self):
@@ -63,18 +59,31 @@ class Price(models.Model):
 
 class TextSes(models.Model):
     yaratish = models.CharField(max_length=380)
+    yaratish_ru = models.CharField(max_length=380, null=True, blank=True)
     jins = models.CharField(max_length=380)
+    jins_ru = models.CharField(max_length=380, null=True, blank=True)
     moshina = models.CharField(max_length=380)
+    moshina_ru = models.CharField(max_length=380, null=True, blank=True)
     instructor = models.CharField(max_length=380)
+    instructor_ru = models.CharField(max_length=380, null=True, blank=True)
     manzil = models.CharField(max_length=380)
+    manzil_ru = models.CharField(max_length=380, null=True, blank=True)
     kun = models.CharField(max_length=380)
+    kun_ru = models.CharField(max_length=380, null=True, blank=True)
     utgan_kun = models.CharField(max_length=380)
+    utgan_kun_ru = models.CharField(max_length=380, null=True, blank=True)
     vaqt = models.CharField(max_length=380)
+    vaqt_ru = models.CharField(max_length=380, null=True, blank=True)
     utgan_vaqt = models.CharField(max_length=380)
-    band_qilingan_vaqt= models.CharField(max_length=380)
+    utgan_vaqt_ru = models.CharField(max_length=380, null=True, blank=True)
+    band_qilingan_vaqt = models.CharField(max_length=380)
+    band_qilingan_vaqt_ru = models.CharField(max_length=380, null=True, blank=True)
     tulov = models.CharField(max_length=380)
+    tulov_ru = models.CharField(max_length=380, null=True, blank=True)
     mashgulot_yaratilsa = models.CharField(max_length=380)
+    mashgulot_yaratilsa_ru = models.CharField(max_length=380, null=True, blank=True)
     mashgulot_yaratilmasa = models.CharField(max_length=380)
+    mashgulot_yaratilmasa_ru = models.CharField(max_length=380, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Машғулот техти'

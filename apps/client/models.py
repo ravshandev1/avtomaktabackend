@@ -26,7 +26,7 @@ class Client(models.Model):
     ism = models.CharField(max_length=255)
     familiya = models.CharField(max_length=255)
     telefon = models.CharField(validators=[phone_regex], max_length=12)
-    prava = models.CharField(max_length=4, default="Yo'q")
+    prava = models.CharField(max_length=15)
     telegram_id = models.BigIntegerField()
 
     def __str__(self):
@@ -35,12 +35,19 @@ class Client(models.Model):
 
 class TextClientRegister(models.Model):
     ism = models.CharField(max_length=380)
+    ism_ru = models.CharField(max_length=380, null=True, blank=True)
     familiya = models.CharField(max_length=380)
+    familiya_ru = models.CharField(max_length=380, null=True, blank=True)
     telefon = models.CharField(max_length=380)
+    telefon_ru = models.CharField(max_length=380, null=True, blank=True)
     prava = models.CharField(max_length=380)
+    prava_ru = models.CharField(max_length=380, null=True, blank=True)
     telefon_qayta = models.CharField(max_length=380)
+    telefon_qayta_ru = models.CharField(max_length=380, null=True, blank=True)
     prava_bor = models.CharField(max_length=380)
+    prava_bor_ru = models.CharField(max_length=380, null=True, blank=True)
     prava_yuq = models.CharField(max_length=380)
+    prava_yuq_ru = models.CharField(max_length=380, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Техт регистер'
@@ -49,10 +56,15 @@ class TextClientRegister(models.Model):
 
 class TextClientUpdate(models.Model):
     ism = models.CharField(max_length=380)
+    ism_ru = models.CharField(max_length=380, null=True, blank=True)
     familiya = models.CharField(max_length=380)
+    familiya_ru = models.CharField(max_length=380, null=True, blank=True)
     telefon = models.CharField(max_length=380)
+    telefon_ru = models.CharField(max_length=380, null=True, blank=True)
     prava = models.CharField(max_length=380)
+    prava_ru = models.CharField(max_length=380, null=True, blank=True)
     telefon_qayta = models.CharField(max_length=380)
+    telefon_qayta_ru = models.CharField(max_length=380, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Техт изменет'

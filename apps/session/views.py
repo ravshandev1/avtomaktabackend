@@ -59,13 +59,34 @@ class FilterCreateAPI(generics.ListAPIView):
         if cat:
             qs = self.queryset.filter(Q(tuman__exact=tum), Q(toifa__toifa__exact=cat)).order_by('jins').distinct('jins')
         gen = self.request.query_params.get('gen')
-        if gen:
-            qs = self.queryset.filter(Q(tuman__exact=tum), Q(toifa__toifa__exact=cat), Q(jins=gen)).order_by(
-                'moshina').distinct('moshina')
+        if (gen == 'Мужчина') or (gen == 'Еркак'):
+            qs = self.queryset.filter(tuman__exact=tum, toifa__toifa__exact=cat)
+            if gen == 'Еркак':
+                qs = qs.filter(Q(jins__exact=gen) | Q(jins__exact='Мужчина')).order_by(
+                    'moshina').distinct('moshina')
+            elif gen == 'Мужчина':
+                qs = qs.filter(Q(jins__exact=gen) | Q(jins__exact='Еркак')).order_by(
+                    'moshina').distinct('moshina')
+            print(qs)
+        elif (gen == 'Женщины') or (gen == 'Аёл'):
+            qs = self.queryset.filter(tuman__exact=tum, toifa__toifa__exact=cat)
+            if gen == 'Аёл':
+                qs = qs.filter(Q(jins__exact=gen) | Q(jins__exact='Женщины')).order_by(
+                    'moshina').distinct('moshina')
+            elif gen == 'Женщины':
+                qs = qs.filter(Q(jins__exact=gen) | Q(jins__exact='Аёл')).order_by(
+                    'moshina').distinct('moshina')
         car = self.request.query_params.get('car')
         if car:
-            qs = self.queryset.filter(Q(tuman__exact=tum), Q(toifa__toifa__exact=cat), Q(jins__exact=gen),
-                                      Q(moshina__exact=car))
+            qs = self.queryset.filter(Q(tuman__exact=tum), Q(toifa__toifa__exact=cat), Q(moshina__exact=car))
+            if gen == 'Аёл':
+                qs = qs.filter(Q(jins__exact=gen) | Q(jins__exact='Женщины'))
+            elif gen == 'Женщины':
+                qs = qs.filter(Q(jins__exact=gen) | Q(jins__exact='Аёл'))
+            elif gen == 'Еркак':
+                qs = qs.filter(Q(jins__exact=gen) | Q(jins__exact='Мужчина'))
+            elif gen == 'Мужчина':
+                qs = qs.filter(Q(jins__exact=gen) | Q(jins__exact='Еркак'))
         return qs
 
     def post(self, request, *args, **kwargs):

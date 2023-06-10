@@ -53,7 +53,7 @@ class RatingAPI(views.APIView):
         i_id = Instructor.objects.filter(telegram_id=instructor).first()
         c_id = Client.objects.filter(telegram_id=client).first()
         Rating.objects.create(instructor_id=i_id.id, client_id=c_id.id)
-        return response.Response({'message': "Бахолаш учун рахмат!!!", 'message_ru': "Спасибо для счастья!!!"})
+        return response.Response({'message': "Бахолаш учун рахмат!!!", 'message_ru': "Спасибо за оценку!!!"})
 
     def patch(self, request, *args, **kwargs):
         client = int(self.request.data['client'])

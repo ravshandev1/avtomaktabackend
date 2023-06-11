@@ -62,7 +62,7 @@ class RatingAPI(views.APIView):
         rs = rt.filter(rate=0).first()
         rs.rate = rate
         rs.save()
-        return response.Response({'message': "Бахолаш учун рахмат!!!", 'message_ru': "Спасибо для счастья!!!"})
+        return response.Response({'message': "Бахолаш учун рахмат!!!", 'message_ru': "Спасибо за оценку!!!"})
 
 
 class RegionListAPI(generics.ListAPIView):

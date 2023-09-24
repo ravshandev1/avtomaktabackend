@@ -67,7 +67,6 @@ class FilterCreateAPI(generics.ListAPIView):
             elif gen == 'Мужчина':
                 qs = qs.filter(Q(jins__exact=gen) | Q(jins__exact='Еркак')).order_by(
                     'moshina').distinct('moshina')
-            print(qs)
         elif (gen == 'Женщины') or (gen == 'Аёл'):
             qs = self.queryset.filter(tuman__exact=tum, toifa__toifa__exact=cat)
             if gen == 'Аёл':
@@ -93,11 +92,9 @@ class FilterCreateAPI(generics.ListAPIView):
         ins_tg = self.request.data['ins_tg_id']
         car_name = self.request.data['moshina']
         tg_id = self.request.data['telegram_id']
-        cat = self.request.data['toifa']
         car = Car.objects.filter(nomi=car_name).first()
         instructor = Instructor.objects.filter(telegram_id=ins_tg).first()
         client = Client.objects.filter(telegram_id=tg_id).first()
-
         data = dict()
         data['client'] = client.id
         data['instructor'] = instructor.id

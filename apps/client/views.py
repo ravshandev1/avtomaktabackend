@@ -1,8 +1,13 @@
 from rest_framework import generics, response, status, views
-from .models import Client, TextClientRegister, TextClientUpdate
-from .serializers import ClientSerializer, TextRSerializer, TextUSerializer
+from .models import Client, TextClientRegister, TextClientUpdate, Information
+from .serializers import ClientSerializer, TextRSerializer, TextUSerializer, InformationSerializer
 from django.shortcuts import get_object_or_404
 from instructor.models import Instructor
+
+
+class InformationAPI(generics.RetrieveAPIView):
+    queryset = Information
+    serializer_class = InformationSerializer
 
 
 class TextRAPI(generics.RetrieveAPIView):

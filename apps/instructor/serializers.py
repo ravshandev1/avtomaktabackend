@@ -24,8 +24,7 @@ class InstructorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Instructor
         fields = ['id', 'ism', 'familiya', 'telefon', 'jins', 'tuman', 'toifa', 'toifa_name', 'moshina', 'nomeri',
-                  'balans',
-                  'telegram_id', 'get_rating', 'location', 'card']
+                  'balans', 'telegram_id', 'get_rating', 'location', 'card']
 
     toifa_name = serializers.SerializerMethodField()
 

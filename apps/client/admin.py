@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import Client, TextClientUpdate, TextClientRegister
+from .models import Client, TextClientUpdate, TextClientRegister, Information
+
+
+@admin.register(Information)
+class InformationAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(Client)

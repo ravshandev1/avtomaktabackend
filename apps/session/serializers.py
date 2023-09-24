@@ -43,8 +43,8 @@ class MoshinaSerializer(serializers.ModelSerializer):
 class SessionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
-        fields = ['id', 'client', 'vaqt', 'tulov_turi', 'c_telefoni', 'i_telefoni', 'instructor', 'moshina',
-                  'jins', 'toifa']
+        fields = ['id', 'client', 'vaqt', 'tulov_turi', 'c_telefoni', 'i_telefoni', 'instructor', 'moshina', 'jins',
+                  'toifa']
 
     client = serializers.CharField(source='client.ism')
     instructor = serializers.CharField(source='instructor.ism')

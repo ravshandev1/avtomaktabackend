@@ -7,6 +7,21 @@ phone_regex = RegexValidator(
 )
 
 
+class Information(models.Model):
+    class Meta:
+        verbose_name = 'Маълумотлар'
+        verbose_name_plural = 'Маълумотлар'
+
+    bot_link = models.CharField(max_length=250)
+    online_lesson = models.TextField()
+    online_lesson_ru = models.TextField()
+    text = models.TextField()
+    text_ru = models.TextField()
+
+    def __str__(self):
+        return self.bot_link
+
+
 class Category(models.Model):
     class Meta:
         verbose_name = 'Права тоифалари'
